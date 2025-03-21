@@ -48,8 +48,36 @@ def Sbert(description: str):
             del map[s_temp[i]] #Will delete the K,V pair associated with the description therefore it will not mess up anything else
 
     #print(f'Remaining similar courses: {len(list(map.keys()))}')
+            
+    '''
+    json({
+    'subject': subject
+    'number': number
+    'course': name
+    })
+    '''
+            
+    courses = []
+
+    descriptions = list(map.keys())
+
+    names = []
+    subjects = []
+    numbers = []
+    for i in descriptions:
+        subject = str(df.loc[df['Description'] == i, 'Subject'])
+        name = str(df.loc[df['Description'] == i, 'Name'])
+        number = str(df.loc[df['Description'] == i, 'Number'])
+
+        subjects.append(subject)
+        numbers.append(number)
+        names.append(name)
+
+    #json    
+    for i in range(0,len(descriptions)):
+        courses.append({'course': names[i], 'subject': subjects[i], 'number': numbers[i]})
     
-    return list(map.keys())
+    return courses
     
 
 
