@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(script_dir, '../updated-course-catalog.csv')
+file_path = os.path.join(script_dir, 'updated-course-catalog.csv')
 df = pd.read_csv(file_path)
 
 sentences = df['Description'].tolist() #All the course descriptions
@@ -12,7 +12,7 @@ sentences = df['Description'].tolist() #All the course descriptions
 #Map description->score
     #then we can go back to the df and extract the course number
 
-def Sbert(description: str):
+def Sbert(description: str) -> tuple[list,list,list]:
     #Good cos similarity score is > 0.65
     model = SentenceTransformer("all-MiniLM-L6-v2")
     map = {}
@@ -77,7 +77,7 @@ def Sbert(description: str):
     for i in range(0,len(descriptions)):
         courses.append({'course': names[i], 'subject': subjects[i], 'number': numbers[i]})
     
-    return courses
+    return names, subjects, numbers
     
 
 
