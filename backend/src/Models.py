@@ -1,6 +1,16 @@
 from sentence_transformers import SentenceTransformer
 import pandas as pd
 import os
+from pydantic import BaseModel
+
+class Course(BaseModel):
+    subject: str
+    number: str
+    name: str
+
+class NLPResponse(BaseModel):
+    courses: list[Course]
+    message: str
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(script_dir, 'updated-course-catalog.csv')
@@ -12,7 +22,8 @@ sentences = df['Description'].tolist() #All the course descriptions
 #Map description->score
     #then we can go back to the df and extract the course number
 
-def Sbert(description: str) -> tuple[list,list,list]:
+def Sbert(description: str) -> NLPResponse:
+    print("IN SBERT FUNCTION")
     #Good cos similarity score is > 0.65
     model = SentenceTransformer("all-MiniLM-L6-v2")
     map = {}
@@ -24,6 +35,7 @@ def Sbert(description: str) -> tuple[list,list,list]:
 
     map = {key: 0 for key in s_temp}
 
+    print("HERE1")
     embeddings = model.encode(sentences)
     similarity_matrix = model.similarity(embeddings, embeddings)
     similar_to_sentence1 = similarity_matrix[0]
@@ -31,7 +43,7 @@ def Sbert(description: str) -> tuple[list,list,list]:
     for i in range(0,n):
         map[s_temp[i]] = similar_to_sentence1[i] #Description -> score
 
-
+    print("HERE2")
     #Now only take similarities where the value is > 0.65    
     for i in range(0,n):
         
@@ -56,8 +68,9 @@ def Sbert(description: str) -> tuple[list,list,list]:
     'name': name
     })
     '''
+    print("HERE3")
             
-    courses = []
+    courses_model = []
 
     descriptions = list(map.keys())
 
@@ -65,24 +78,33 @@ def Sbert(description: str) -> tuple[list,list,list]:
     subjects = []
     numbers = []
     for i in descriptions:
-        #subject = str(df.loc[df['Description'] == i, 'Subject'])
-        subject = df.loc[df['Description'] == i, 'Subject'].values[0]
+        subject = str(df.loc[df['Description'] == i, 'Subject'])
+        #subject = str(df.loc[df['Description'] == i, 'Subject'].values[0])
 
-        #name = str(df.loc[df['Description'] == i, 'Name'])
-        name = df.loc[df['Description'] == i, 'Name'].values[0]
+        name = str(df.loc[df['Description'] == i, 'Name'])
+        #name = str(df.loc[df['Description'] == i, 'Name'].values[0])
 
-        #number = str(df.loc[df['Description'] == i, 'Number'])
-        number = df.loc[df['Description'] == i, 'Number'].values[0]
+        number = str(df.loc[df['Description'] == i, 'Number'])
+        #number = str(df.loc[df['Description'] == i, 'Number'].values[0])
 
         subjects.append(subject)
         numbers.append(number)
         names.append(name)
-
-    #json    
-    for i in range(0,len(descriptions)):
-        courses.append({'name': names[i], 'subject': subjects[i], 'number': numbers[i]})
     
-    return courses
+    print("HERE4")
+
+    #json
+    for i in range(0,len(descriptions)):
+        print(f"Subject: {subjects[i]}, Name: {names[i]}, Number: {numbers[i]}")
+        c = Course(name=names[i], subject=subjects[i], number=numbers[i]) #all strings confirmed?????
+        courses_model.append(c)
+    
+    print("ABOUT TO RETURN")
+
+    return NLPResponse (
+        courses=courses_model,
+        message="Finished searching for courses!"
+    )
     
 
 

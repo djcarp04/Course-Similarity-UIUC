@@ -21,8 +21,10 @@ const Courses = () => {
 
   const searchCourse = async (description) => {
     try {
+      console.log("In react, about to call api")
       await api.post('/NLP', { description: description });
       fetchCourses();  // Refresh the list after adding a fruit
+      console.log("After api call and refreshed the list")
     } catch (error) {
       console.error("Error searching courses", error);
     }
