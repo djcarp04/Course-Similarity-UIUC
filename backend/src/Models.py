@@ -45,6 +45,7 @@ def Sbert(description: str) -> NLPResponse:
 
     print("HERE2")
     #Now only take similarities where the value is > 0.65    
+    #OPTIMIZE: Only add to map if the score is > 0.65, dont delete if it's less than
     for i in range(0,n):
         
         ''''
@@ -56,11 +57,18 @@ def Sbert(description: str) -> NLPResponse:
             print(f'Value not in map: {s_temp[i]}')
             continue
         
-        if map[s_temp[i]] < 0.6: #PROBLEM: IF CLASSES HAVE MATCHING DESCRIPTIONS AND ONE GETS REMOVED THEN THE VALUE DOES NOT EXIST SO REMOVE ALL MATCHING DESCRIPTIONS
+        if map[s_temp[i]] < 0.65: #PROBLEM: IF CLASSES HAVE MATCHING DESCRIPTIONS AND ONE GETS REMOVED THEN THE VALUE DOES NOT EXIST SO REMOVE ALL MATCHING DESCRIPTIONS
             del map[s_temp[i]] #Will delete the K,V pair associated with the description therefore it will not mess up anything else
 
     #print(f'Remaining similar courses: {len(list(map.keys()))}')
-            
+    
+    #if no courses that have similarity score over 0.65:
+    if not map:
+        return NLPResponse (
+            courses=[],
+            message="Please make description more descriptive"
+        )
+
     '''
     json({
     'subject': subject
@@ -78,23 +86,24 @@ def Sbert(description: str) -> NLPResponse:
     subjects = []
     numbers = []
     for i in descriptions:
-        subject = str(df.loc[df['Description'] == i, 'Subject'])
-        #subject = str(df.loc[df['Description'] == i, 'Subject'].values[0])
+        if i in df['Description'].values: #to take out the 'series[]' part
+            subject = str(df.loc[df['Description'] == i, 'Subject'].to_string(index=False))
+            #subject = str(df.loc[df['Description'] == i, 'Subject'].values[0])
 
-        name = str(df.loc[df['Description'] == i, 'Name'])
-        #name = str(df.loc[df['Description'] == i, 'Name'].values[0])
+            name = str(df.loc[df['Description'] == i, 'Name'].to_string(index=False))
+            #name = str(df.loc[df['Description'] == i, 'Name'].values[0])
 
-        number = str(df.loc[df['Description'] == i, 'Number'])
-        #number = str(df.loc[df['Description'] == i, 'Number'].values[0])
+            number = str(df.loc[df['Description'] == i, 'Number'].to_string(index=False))
+            #number = str(df.loc[df['Description'] == i, 'Number'].values[0])
 
-        subjects.append(subject)
-        numbers.append(number)
-        names.append(name)
+            subjects.append(subject)
+            numbers.append(number)
+            names.append(name)
     
     print("HERE4")
 
     #json
-    for i in range(0,len(descriptions)):
+    for i in range(0,len(names)):
         print(f"Subject: {subjects[i]}, Name: {names[i]}, Number: {numbers[i]}")
         c = Course(name=names[i], subject=subjects[i], number=numbers[i]) #all strings confirmed?????
         courses_model.append(c)
