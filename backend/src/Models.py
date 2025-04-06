@@ -53,7 +53,7 @@ def Sbert(description: str) -> tuple[list,list,list]:
     json({
     'subject': subject
     'number': number
-    'course': name
+    'name': name
     })
     '''
             
@@ -65,9 +65,14 @@ def Sbert(description: str) -> tuple[list,list,list]:
     subjects = []
     numbers = []
     for i in descriptions:
-        subject = str(df.loc[df['Description'] == i, 'Subject'])
-        name = str(df.loc[df['Description'] == i, 'Name'])
-        number = str(df.loc[df['Description'] == i, 'Number'])
+        #subject = str(df.loc[df['Description'] == i, 'Subject'])
+        subject = df.loc[df['Description'] == i, 'Subject'].values[0]
+
+        #name = str(df.loc[df['Description'] == i, 'Name'])
+        name = df.loc[df['Description'] == i, 'Name'].values[0]
+
+        #number = str(df.loc[df['Description'] == i, 'Number'])
+        number = df.loc[df['Description'] == i, 'Number'].values[0]
 
         subjects.append(subject)
         numbers.append(number)
@@ -75,9 +80,9 @@ def Sbert(description: str) -> tuple[list,list,list]:
 
     #json    
     for i in range(0,len(descriptions)):
-        courses.append({'course': names[i], 'subject': subjects[i], 'number': numbers[i]})
+        courses.append({'name': names[i], 'subject': subjects[i], 'number': numbers[i]})
     
-    return names, subjects, numbers
+    return courses
     
 
 
