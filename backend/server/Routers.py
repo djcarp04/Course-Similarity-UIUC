@@ -15,7 +15,7 @@ class NLPResponse(BaseModel):
 
 
 
-@router.post("NLP", response_model=NLPResponse)
+@router.post("/NLP", response_model=NLPResponse)
 async def fetch_repo(request: NLPRequest) -> NLPResponse:
     try:
         # Your function call here

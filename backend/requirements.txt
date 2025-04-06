@@ -1,0 +1,5 @@
+fastapi
+pandas
+numpy
+sentence_transformers
+pydantic
