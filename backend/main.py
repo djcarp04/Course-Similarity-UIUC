@@ -9,7 +9,7 @@ from typing import List
 app = FastAPI(debug=True)
 
 
-#uvicorn main:app --reloadfede
+#uvicorn main:app --reload
 
 '''
 json({
