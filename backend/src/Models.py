@@ -38,32 +38,47 @@ def Sbert(description: str) -> NLPResponse:
     print("HERE1")
     embeddings = model.encode(sentences)
     similarity_matrix = model.similarity(embeddings, embeddings)
-    similar_to_sentence1 = similarity_matrix[0]
+    similar_to_sentence1 = list(similarity_matrix[0])
 
     for i in range(0,n):
         map[s_temp[i]] = similar_to_sentence1[i] #Description -> score
 
     print("HERE2")
-    #Now only take similarities where the value is > 0.65    
+  
     #OPTIMIZE: Only add to map if the score is > 0.65, dont delete if it's less than
-    for i in range(0,n):
-        
-        ''''
+    map2 = {}
+
+    #Top 5:
+    for i in range(0,6):
+        add_score = max(similar_to_sentence1)
+        add_index = similar_to_sentence1.index(add_score)
+        map2.update({s_temp[add_index]: add_score})
+        del s_temp[add_index]
+        del similar_to_sentence1[add_index]
+
+    #print(len(map2))
+    #print(map2.values())
+
+
+
+    '''  #Now only take similarities where the value is > 0.65    
+    for i in range(0,n): 
         if i in range(0,20):
             print(f'{s_temp[i]}: + {map[s_temp[i]]}')
-        '''
         
         if s_temp[i] in map == False:
             print(f'Value not in map: {s_temp[i]}')
             continue
-        
+
+
         if map[s_temp[i]] < 0.65: #PROBLEM: IF CLASSES HAVE MATCHING DESCRIPTIONS AND ONE GETS REMOVED THEN THE VALUE DOES NOT EXIST SO REMOVE ALL MATCHING DESCRIPTIONS
             del map[s_temp[i]] #Will delete the K,V pair associated with the description therefore it will not mess up anything else
+    '''
 
     #print(f'Remaining similar courses: {len(list(map.keys()))}')
     
     #if no courses that have similarity score over 0.65:
-    if not map:
+    if not map2:
         return NLPResponse (
             courses=[],
             message="Please make description more descriptive"
@@ -80,7 +95,7 @@ def Sbert(description: str) -> NLPResponse:
             
     courses_model = []
 
-    descriptions = list(map.keys())
+    descriptions = list(map2.keys())
 
     names = []
     subjects = []
