@@ -2,6 +2,8 @@ from sentence_transformers import SentenceTransformer
 import pandas as pd
 import os
 from pydantic import BaseModel
+import heapq
+import copy
 
 class Course(BaseModel):
     subject: str
@@ -40,27 +42,38 @@ def Sbert(description: str) -> NLPResponse:
     similarity_matrix = model.similarity(embeddings, embeddings)
     similar_to_sentence1 = list(similarity_matrix[0])
 
+    heap = copy.deepcopy(similar_to_sentence1)
+    heap = [-i for i in heap] #because we need a max heap for top 5
+    heapq.heapify(heap)
+
     for i in range(0,n):
         map[s_temp[i]] = similar_to_sentence1[i] #Description -> score
 
     print("HERE2")
   
-    #OPTIMIZE: Only add to map if the score is > 0.65, dont delete if it's less than
     map2 = {}
 
-    #Top 5:
+    #Top 5 polished:
+    while len(map2) < 6:
+        add_score = heapq.heappop(heap) * -1
+        add_index = similar_to_sentence1.index(add_score)
+        map2.update({s_temp[add_index]: add_score}) #convert it back to normal
+
+    #Old strategy
+    '''
     for i in range(0,6):
         add_score = max(similar_to_sentence1)
         add_index = similar_to_sentence1.index(add_score)
         map2.update({s_temp[add_index]: add_score})
         del s_temp[add_index]
         del similar_to_sentence1[add_index]
+    '''
 
     #print(len(map2))
-    #print(map2.values())
+    print(map2.values()) #fist tensor will always be 1
 
 
-
+    #Old old way
     '''  #Now only take similarities where the value is > 0.65    
     for i in range(0,n): 
         if i in range(0,20):

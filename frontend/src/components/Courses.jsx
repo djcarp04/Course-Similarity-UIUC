@@ -43,13 +43,13 @@ const Courses = () => {
           {courses.length === 0 ? (
             <p>{message}</p> // Display message when courses are empty
           ) : (
-            <ul>
+            <ol>
               {courses.map((course, index) => (
                 <li key={index}>
                   {course.subject} {course.number} - {course.name}
                 </li>
               ))}
-            </ul>
+            </ol>
           )}
         </>
       )}

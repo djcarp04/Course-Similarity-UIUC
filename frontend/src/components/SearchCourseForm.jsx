@@ -7,17 +7,18 @@ const SearchCourseForm = ({ searchCourse }) => {
     event.preventDefault();
     if (description) {
         searchCourse(description);
-        setDescription('');
+        //setDescription('');
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
+      <textarea
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Enter course description"
+        rows={4}
+        cols={50}
       />
       <button type="submit">Search</button>
     </form>
