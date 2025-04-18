@@ -7,7 +7,7 @@ const SearchCourseForm = ({ searchCourse }) => {
     event.preventDefault();
     if (description) {
         searchCourse(description);
-        //setDescription('');
+        //setDescription(''); //to keep the description from going blank
     }
   };
 

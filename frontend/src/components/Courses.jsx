@@ -4,14 +4,16 @@ import api from '../api';
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [message, setMessage] = useState('Please paste in course description');
 
   const fetchCourses = async () => {
     try {
       const response = await api.get('/NLP');
       setCourses(response.data.courses);
-      setMessage(response.data.message);
+      setLoading(false);
+      //setMessage(response.data.message);
     } catch (error) {
       console.error("Error fetching courses", error);
     } finally {
@@ -20,6 +22,9 @@ const Courses = () => {
   };
 
   const searchCourse = async (description) => {
+    setHasSearched(true);
+    setLoading(true);
+    setMessage('Loading courses...')
     try {
       console.log("In react, about to call api")
       await api.post('/NLP', { description: description });
@@ -36,12 +41,11 @@ const Courses = () => {
 
   return (
     <div>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
         <>
-          {courses.length === 0 ? (
+          {!hasSearched ? (
             <p>{message}</p> // Display message when courses are empty
+          ) : loading ? (
+            <p>{message}</p>
           ) : (
             <ol>
               {courses.map((course, index) => (
@@ -52,7 +56,6 @@ const Courses = () => {
             </ol>
           )}
         </>
-      )}
       <SearchCourseForm searchCourse={searchCourse} />
     </div>
   );

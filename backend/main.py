@@ -43,6 +43,7 @@ def fetch():
         return NLPResponse(
             courses=coursesdb["courses"], 
             message="Please paste in course description"
+            #message="HAHAHAH"
         )
     else:
         return NLPResponse(
