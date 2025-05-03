@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import SearchCourseForm from './SearchCourseForm';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import api from '../api';
 
 const Courses = () => {
@@ -28,7 +36,7 @@ const Courses = () => {
     try {
       console.log("In react, about to call api")
       await api.post('/NLP', { description: description });
-      fetchCourses();  // Refresh the list after adding a fruit
+      fetchCourses();
       console.log("After api call and refreshed the list")
     } catch (error) {
       console.error("Error searching courses", error);
@@ -39,29 +47,46 @@ const Courses = () => {
     fetchCourses();
   }, []);
 
-  function courseList({courses}) {
-    cour
-  }
+  const CourseTable = ({ courses }) => (
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Subject</TableCell>
+            <TableCell>Number</TableCell>
+            <TableCell>Name</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {courses.map((course, index) => (
+            <TableRow key={index}>
+              <TableCell>{course.subject}</TableCell>
+              <TableCell>{course.number}</TableCell>
+              <TableCell>
+                <a href={`https://courses.illinois.edu/search/schedule/2025/spring/${course.subject}/${course.number}`} target="_blank" rel="noopener noreferrer">
+                {course.name}
+                </a>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 
   return (
-    <div>
-        <>
+    <Stack spacing={2}>
+      <Paper>
           {!hasSearched ? (
-            <p>{message}</p> // Display message when courses are empty
+            <p>{message}</p>
           ) : loading ? (
             <p>{message}</p>
           ) : (
-            <ol>
-              {courses.map((course, index) => (
-                <li key={index}>
-                  {course.subject} {course.number} - {course.name}
-                </li>
-              ))}
-            </ol>
+            <CourseTable courses={courses} />
           )}
-        </>
+      </Paper>
       <SearchCourseForm searchCourse={searchCourse} />
-    </div>
+  </Stack>
   );
 };
 

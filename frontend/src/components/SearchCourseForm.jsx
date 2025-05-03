@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField } from '@mui/material';
 import { Button } from '@mui/material';
+import Paper from '@mui/material/Paper';
 
 const SearchCourseForm = ({ searchCourse }) => {
   const [description, setDescription] = useState('');
@@ -14,6 +15,7 @@ const SearchCourseForm = ({ searchCourse }) => {
   };
 
   return (
+    <Paper>
     <form onSubmit={handleSubmit}>
       <TextField
       id="course-description"
@@ -26,8 +28,9 @@ const SearchCourseForm = ({ searchCourse }) => {
       placeholder="Enter course description"
       variant="outlined"
     />
-      <Button size ="Large" type="submit">Search</Button>
+      <Button size ="Large" type="submit" fullWidth>Search</Button>
     </form>
+    </Paper>
   );
 };
 
