@@ -39,6 +39,10 @@ const Courses = () => {
     fetchCourses();
   }, []);
 
+  function courseList({courses}) {
+    cour
+  }
+
   return (
     <div>
         <>

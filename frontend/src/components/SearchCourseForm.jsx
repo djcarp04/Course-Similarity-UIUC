@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { TextField } from '@mui/material';
+import { Button } from '@mui/material';
 
 const SearchCourseForm = ({ searchCourse }) => {
   const [description, setDescription] = useState('');
@@ -13,18 +15,22 @@ const SearchCourseForm = ({ searchCourse }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <textarea
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="Enter course description"
-        rows={4}
-        cols={50}
-      />
-      <button type="submit">Search</button>
+      <TextField
+      id="course-description"
+      label="Course Description"
+      multiline
+      rows={3.5}
+      fullWidth
+      value={description}
+      onChange={(e) => setDescription(e.target.value)}
+      placeholder="Enter course description"
+      variant="outlined"
+    />
+      <Button size ="Large" type="submit">Search</Button>
     </form>
   );
 };
 
-//does not actually search for a course justi mplement the button functionality
+//does not actually search for a course just implement the button functionality
 
 export default SearchCourseForm;
