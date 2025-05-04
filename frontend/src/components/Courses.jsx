@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SearchCourseForm from './SearchCourseForm';
+import UiucSearch from './UiucSearch';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -15,6 +16,7 @@ const Courses = () => {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [message, setMessage] = useState('Please paste in course description');
+  const [description, setDescription] = useState('');
 
   const fetchCourses = async () => {
     try {
@@ -29,13 +31,13 @@ const Courses = () => {
     }
   };
 
-  const searchCourse = async (description) => {
+  const searchCourse = async () => {
     setHasSearched(true);
     setLoading(true);
     setMessage('Loading courses...')
     try {
       console.log("In react, about to call api")
-      await api.post('/NLP', { description: description });
+      await api.post('/NLP', { description });
       fetchCourses();
       console.log("After api call and refreshed the list")
     } catch (error) {
@@ -75,17 +77,24 @@ const Courses = () => {
   );
 
   return (
-    <Stack spacing={2}>
-      <Paper>
-          {!hasSearched ? (
-            <p>{message}</p>
-          ) : loading ? (
-            <p>{message}</p>
-          ) : (
-            <CourseTable courses={courses} />
-          )}
-      </Paper>
-      <SearchCourseForm searchCourse={searchCourse} />
+    <Stack spacing={4} direction={"row"} >
+      <UiucSearch onCourseSelect={searchCourse}/>
+      <Stack spacing={2} style={{ flexGrow: 1 }}>
+        <Paper>
+            {!hasSearched ? (
+              <p>{message}</p>
+            ) : loading ? (
+              <p>{message}</p>
+            ) : (
+              <CourseTable courses={courses} />
+            )}
+        </Paper>
+        <SearchCourseForm
+          description={description}
+          setDescription={setDescription}
+          searchCourse={searchCourse}
+        />
+    </Stack>
   </Stack>
   );
 };

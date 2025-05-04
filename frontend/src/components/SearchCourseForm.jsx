@@ -3,8 +3,7 @@ import { TextField } from '@mui/material';
 import { Button } from '@mui/material';
 import Paper from '@mui/material/Paper';
 
-const SearchCourseForm = ({ searchCourse }) => {
-  const [description, setDescription] = useState('');
+const SearchCourseForm = ({ description, setDescription, searchCourse }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -33,7 +32,5 @@ const SearchCourseForm = ({ searchCourse }) => {
     </Paper>
   );
 };
-
-//does not actually search for a course just implement the button functionality
 
 export default SearchCourseForm;
