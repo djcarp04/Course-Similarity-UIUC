@@ -22,7 +22,7 @@ const UiucSearch = ({ onCourseSelect }) => {
 
     return(
         <Autocomplete
-            placeholder="Outlined variant (default)"
+            placeholder="Start typing for UIUC course"
             id="autocomplete"
             //freeSolo
             autoSelect

@@ -54,9 +54,11 @@ def Sbert(description: str) -> NLPResponse:
     map2 = {}
 
     #Top 5 polished:
-    while len(map2) < 6:
+    while len(map2) < 5:
         add_score = heapq.heappop(heap) * -1
         add_index = similar_to_sentence1.index(add_score)
+        if description == s_temp[add_index]: 
+            continue #dont put in if the description is identical
         map2.update({s_temp[add_index]: add_score}) #convert it back to normal
 
     #Old strategy
