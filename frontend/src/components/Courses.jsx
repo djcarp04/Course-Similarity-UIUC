@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import SearchCourseForm from './SearchCourseForm';
 import UiucSearch from './UiucSearch';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
 import api from '../api';
+import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -77,8 +70,11 @@ const Courses = () => {
   );
 
   return (
-    <Stack spacing={4} direction={"row"} >
-      <UiucSearch onCourseSelect={setDescription}/>
+    <Stack spacing={2} direction={"row"} >
+       <div style={{ width: 250}}>
+          <b>Search here for UIUC courses:</b>
+          <UiucSearch onCourseSelect={setDescription} />
+      </div>
       <Stack spacing={2} style={{ flexGrow: 1 }}>
         <Paper>
             {!hasSearched ? (

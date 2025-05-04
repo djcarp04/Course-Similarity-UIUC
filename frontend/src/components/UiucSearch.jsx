@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Autocomplete from '@mui/joy/Autocomplete';
-import { TextField } from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
 import courseData from './courses.json';
 
 const filterOptions = createFilterOptions({
-    limit: 3,
+    limit: 5
 });
 
 const UiucSearch = ({ onCourseSelect }) => {
-
+    
     const [courses, setCourses] = useState(['']);
 
     useEffect(() => {
@@ -22,8 +21,9 @@ const UiucSearch = ({ onCourseSelect }) => {
 
     return(
         <Autocomplete
-            placeholder="Start typing for UIUC course"
+            //placeholder="Start typing for UIUC course"
             id="autocomplete"
+            size='medium'
             //freeSolo
             autoSelect
             filterOptions={filterOptions}

@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import { TextField } from '@mui/material';
-import { Button } from '@mui/material';
-import Paper from '@mui/material/Paper';
+import React from 'react';
+import { Stack, TextField, Button, Paper } from '@mui/material';
 
 const SearchCourseForm = ({ description, setDescription, searchCourse }) => {
 
@@ -14,23 +12,30 @@ const SearchCourseForm = ({ description, setDescription, searchCourse }) => {
   };
 
   return (
-    <Paper>
-    <form onSubmit={handleSubmit}>
-      <TextField
-      id="course-description"
-      label="Course Description"
-      multiline
-      rows={3.5}
-      fullWidth
-      value={description}
-      onChange={(e) => setDescription(e.target.value)}
-      placeholder="Enter course description"
-      variant="outlined"
-    />
-      <Button size ="Large" type="submit" fullWidth>Search</Button>
-    </form>
-    </Paper>
+    <Stack spacing={1}>
+      <form onSubmit={handleSubmit}>
+      <Paper>
+          <TextField
+          id="course-description"
+          label="Course Description"
+          multiline
+          rows={6}
+          fullWidth
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Enter course description"
+          variant="outlined"
+          />
+      </Paper>
+      <Paper sx={{mt: 1}}>
+        <Button sx={{color: "white", '&:hover': { backgroundColor: "#E84A27", }}} variant='contained' size ="Large" type="submit" fullWidth>Search</Button>
+      </Paper>
+      </form>
+    </Stack>
   );
 };
+
+
+
 
 export default SearchCourseForm;
