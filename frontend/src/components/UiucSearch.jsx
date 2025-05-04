@@ -8,7 +8,7 @@ const filterOptions = createFilterOptions({
     limit: 3,
 });
 
-const UiucSearch = ({ }) => {
+const UiucSearch = ({ onCourseSelect }) => {
 
     const [courses, setCourses] = useState(['']);
 
@@ -16,38 +16,24 @@ const UiucSearch = ({ }) => {
     fetch('/data/courses.json')
         .then(res => res.json())
         .then(data => {
-        const formatted = data.map((course) => ({
-            label: course.Name,
-            description: course.Description,
-        }));
-        setCourses(formatted);
+            setCourses(data);
         });
     }, []);
 
-    const UiucSearch = () => (
+    return(
         <Autocomplete
-        placeholder="Outlined variant (default)"
-        id="autocomplete"
-        freeSolo
-        autoSelect
-        filterOptions={filterOptions}
-        options={courseData}
-        getOptionLabel={(option) => option.Name}
-        onChange={(e, courses) => {
-            if (courses) onCourseSelect(courses.Description);
-        }}
-        renderInput={params => (
-            <TextField
-            {...params}
-            label="freeSolo"
-            margin="normal"
-            variant="outlined"
-            fullWidth
-            />
-        )}
+            placeholder="Outlined variant (default)"
+            id="autocomplete"
+            //freeSolo
+            autoSelect
+            filterOptions={filterOptions}
+            options={courseData}
+            getOptionLabel={(option) => option.Name}
+            onChange={(e, courses) => {
+                if (courses) onCourseSelect(courses.Description);
+            }}
         />
     );
 };
 
-
-  export default UiucSearch;
+export default UiucSearch;

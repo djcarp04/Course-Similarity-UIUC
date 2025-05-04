@@ -78,7 +78,7 @@ const Courses = () => {
 
   return (
     <Stack spacing={4} direction={"row"} >
-      <UiucSearch onCourseSelect={searchCourse}/>
+      <UiucSearch onCourseSelect={setDescription}/>
       <Stack spacing={2} style={{ flexGrow: 1 }}>
         <Paper>
             {!hasSearched ? (
